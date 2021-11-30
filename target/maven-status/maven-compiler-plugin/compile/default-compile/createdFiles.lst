@@ -1,0 +1,6 @@
+demo/vulnerableapp/demovulnerableapp/SecurityConfiguration.class
+demo/vulnerableapp/demovulnerableapp/DemoLoader.class
+demo/vulnerableapp/demovulnerableapp/DemovulnerableappApplication.class
+demo/vulnerableapp/demovulnerableapp/repository/UserRepository.class
+demo/vulnerableapp/demovulnerableapp/controller/MainController.class
+demo/vulnerableapp/demovulnerableapp/model/User.class
