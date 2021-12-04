@@ -52,10 +52,12 @@ services:
   spring-boot-app:
     build : .
     ports : 
-      - "8080:8080"
+      - 8080:8080
     restart: "always"
     networks:
       - mongodb_network
+    links: 
+      - mongodb
 volumes:
   mongodb-data:
 networks:
