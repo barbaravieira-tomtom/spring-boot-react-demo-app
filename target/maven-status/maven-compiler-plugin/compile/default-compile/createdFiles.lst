@@ -1,5 +1,4 @@
 demo/vulnerableapp/demovulnerableapp/SecurityConfiguration.class
-demo/vulnerableapp/demovulnerableapp/ReactAndSpringDataRestApplication.class
 demo/vulnerableapp/demovulnerableapp/controller/UsersController.class
 demo/vulnerableapp/demovulnerableapp/repository/UserRepository.class
 demo/vulnerableapp/demovulnerableapp/DemoLoader.class
