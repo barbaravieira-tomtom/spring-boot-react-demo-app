@@ -12,7 +12,7 @@
 `docker network create mongodb_network`
 
 2. Create volumes:
-`docker volumes create mongodb_data`
+`docker volume create mongodb_data`
 
 3. Build spring-boot app: 
 `mvn spring-boot:build-image`
@@ -27,6 +27,11 @@
 1. Package the application: `mvn spring-boot:build-image`
 2. Build the docker image: `docker build -t spring-boot-react-demo-app .`
 3. Run the container: `docker run -p 8080:8080 -t spring-boot-react-demo-app`
+
+**Pre-requisite** 
+You need to install `mvnw` before running docker to build the image
+`mvn -N io.takari:maven:wrapper`
+Information about the Maven Wrapper can be found [here](https://www.baeldung.com/maven-wrapper).
 
 
 # 3. Run applications in the local machine

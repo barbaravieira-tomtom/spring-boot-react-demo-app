@@ -20,7 +20,7 @@ import demo.vulnerableapp.demovulnerableapp.model.User;
 import demo.vulnerableapp.demovulnerableapp.repository.UserRepository;
 
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://localhost:3000", "http://0.0.0.0:9090"})
 @RequestMapping("/api")
 @RestController
 public class UsersController {

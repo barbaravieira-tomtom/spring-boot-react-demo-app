@@ -56,9 +56,27 @@ services:
     restart: "always"
     networks:
       - mongodb_network
+      - frontend
     links: 
       - mongodb
+    depends_on:
+      - mongodb
+  # Frontend Service 
+  react-client:
+    build:
+      context: client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api
+    ports:
+      - "9090:80" # Map the exposed port 80 on the container to port 9090 on the host machine
+    restart: always
+    depends_on:
+      - spring-boot-app
+    networks:
+      - frontend 
 volumes:
   mongodb-data:
 networks:
   mongodb_network:
+  frontend:
