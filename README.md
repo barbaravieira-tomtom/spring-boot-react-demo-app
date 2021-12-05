@@ -52,3 +52,7 @@ You need to start the Spring Boot application in a different port, because the d
 # 4. Clean up
 
 Use `docker-compose down --rmi all` to clean up all the images.
+
+# Architecture 
+
+![Diagram](architecture/deployment_diagram.png)
