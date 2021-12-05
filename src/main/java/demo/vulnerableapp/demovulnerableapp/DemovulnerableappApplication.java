@@ -25,8 +25,8 @@ public class DemovulnerableappApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedOrigins("http://localhost:8080",
 				"http://0.0.0.0:9090","http://localhost:9090");
-				registry.addMapping("/api").allowedOrigins("http://localhost:8080",
-						"http://0.0.0.0:9090", "http://localhost:9090");
+				//registry.addMapping("/api").allowedOrigins("http://localhost:8080",
+				//		"http://0.0.0.0:9090", "http://localhost:9090");
 			}
 		};
 	}
