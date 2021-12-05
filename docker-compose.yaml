@@ -49,6 +49,7 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
+  # Backend server
   spring-boot-app:
     build : .
     ports : 
@@ -61,7 +62,7 @@ services:
       - mongodb
     depends_on:
       - mongodb
-  # Frontend Service 
+  # Frontend application 
   react-client:
     build:
       context: client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
