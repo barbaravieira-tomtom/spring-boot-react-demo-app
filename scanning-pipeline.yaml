@@ -17,32 +17,6 @@ parameters:
     type: string
     default: 'True'
 
-variables:
-  - name: pythonVersion
-    value: '3.8'
-  - name: runtimeStack
-    value: 'PYTHON|3.8'
-  - name: projectRoot
-    value: '.'  
-  - name: environmentName
-    value: 'ssu-test-env'
-  - name: azureServiceConnectionId
-    value: 'ssu-prod-sec-sandbox-dev(ab423add-1b02-47c3-a206-5b4394283cbe)'
-  - name: resourceGroupName
-    value: 'rg-sandbox-dev'
-  - name: azureSubscriptionID
-    value: 'ab423add-1b02-47c3-a206-5b4394283cbe'
-  - name: webAppName
-    value: 'ssumyfunctionapp1test'
-  - name: appServicePlan
-    value: 'service-plan-myfunctionapp'
-  - name: storageaccountname
-    value: 'ssudevstorageaccount1'
-  - name: locationName
-    value: 'westeurope'
-  - name: appInsightsName
-    value: 'ssuAppInsightstest'
-
 stages:
   - stage: Build
     displayName: Build and Publish Artifact 
@@ -72,10 +46,6 @@ stages:
         - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
           displayName: 'Upload package'
           artifact: drop
-        - task: UsePythonVersion@0
-          inputs:
-            versionSpec: '$(pythonVersion)'
-          displayName: 'Use Python version'
         - task: Bash@3
           displayName: Install trivy and grype
           inputs:
@@ -114,13 +84,3 @@ stages:
             excludePath: './antenv/'
             format: 'ALL'
             enableExperimental: true
-        - task: Veracode@3
-          inputs:
-            ConnectionDetailsSelection: 'Endpoint'
-            AnalysisService: 'SSU Service Connection'
-            veracodeAppProfile: 'SSU-Test-Application'
-            version: '$(build.buildNumber)'
-            filepath: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
-            sandboxName: 'DevelopmentSandbox'
-            maximumWaitTime: '360'
-   
