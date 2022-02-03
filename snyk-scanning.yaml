@@ -27,7 +27,7 @@ stages:
             serviceConnectionEndpoint: 'Snyk Service Connection'
             testType: 'container'
             dockerImageName: 'spring-boot-react-app-image'
-            dockerfilePath: '.'
+            dockerfilePath: 'Dockerfile'
             monitorWhen: 'always'
             failOnIssues: false
             projectName: 'spring-boot-react-demo-app'
