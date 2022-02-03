@@ -26,8 +26,18 @@ stages:
           inputs:
             serviceConnectionEndpoint: 'Snyk Service Connection'
             testType: 'container'
-            dockerImageName: 'spring-boot-react-app-image'
+            dockerImageName: 'eclipse-temurin:11'
             dockerfilePath: 'Dockerfile'
+            monitorWhen: 'always'
+            failOnIssues: false
+            projectName: 'spring-boot-react-demo-app'
+            organization: 'pilot-org-zd2'
+        - task: SnykSecurityScan@1
+          inputs:
+            serviceConnectionEndpoint: 'Snyk Service Connection'
+            testType: 'container'
+            dockerImageName: 'node:12.4.0-alpine'
+            dockerfilePath: './client/Dockerfile'
             monitorWhen: 'always'
             failOnIssues: false
             projectName: 'spring-boot-react-demo-app'
