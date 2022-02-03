@@ -5,39 +5,29 @@
 
 
 stages:
-  - stage: Build
-    displayName: Build and Publish Artifact 
+  - stage: Snyk
+    displayName: Scan code and container images 
     jobs:
-    - job: Build
+    - job: Scan
       workspace:
         clean: all
       pool:
           vmImage: ubuntu-latest
       steps:
-        - task: Maven@3
-          inputs:
-            mavenPomFile: 'pom.xml'
-            publishJUnitResults: true
-            testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            javaHomeOption: 'JDKVersion'
-            mavenVersionOption: 'Default'
-            mavenAuthenticateFeed: false
-            effectivePomSkip: false
-            sonarQubeRunAnalysis: false
-        - task: ArchiveFiles@2
-          inputs:
-            rootFolderOrFile: '$(Build.SourcesDirectory)'
-            includeRootFolder: false
-            archiveType: 'zip'
-            archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
-            replaceExistingArchive: true
-        - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
-          displayName: 'Upload package'
-          artifact: drop
         - task: SnykSecurityScan@1
           inputs:
             serviceConnectionEndpoint: 'Snyk Service Connection'
             testType: 'app'
+            monitorWhen: 'always'
+            failOnIssues: false
+            projectName: 'spring-boot-react-demo-app'
+            organization: 'pilot-org-zd2'
+        - task: SnykSecurityScan@1
+          inputs:
+            serviceConnectionEndpoint: 'Snyk Service Connection'
+            testType: 'container'
+            dockerImageName: 'spring-boot-react-app-image'
+            dockerfilePath: '.'
             monitorWhen: 'always'
             failOnIssues: false
             projectName: 'spring-boot-react-demo-app'
