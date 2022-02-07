@@ -1,0 +1,82 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+variables:  
+  - name: environmentName
+    value: 'ssu-test-env'
+  - name: azureServiceConnectionId
+    value: 'ssu-prod-sec-sandbox-dev(ab423add-1b02-47c3-a206-5b4394283cbe)'
+  - name: resourceGroupName
+    value: 'rg-sandbox-dev0'
+  - name: azureSubscriptionID
+    value: 'ab423add-1b02-47c3-a206-5b4394283cbe'
+  - name: webAppName
+    value: 'ssumyfunctionapp1test'
+  - name: appServicePlan
+    value: 'service-plan-myfunctionapp'
+  - name: storageaccountname
+    value: 'ssudevstorageaccount1'
+  - name: locationName
+    value: 'westeurope'
+  - name: appInsightsName
+    value: 'ssuAppInsightstest'
+
+stages:
+  - stage: Deploy
+    displayName: Deploy Infra
+    jobs:
+    - deployment: DeployInfra
+      displayName: Create Infra
+      pool:
+        vmImage: ubuntu-latest
+      environment: $(environmentName)
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: AzureResourceGroupDeployment@2
+              inputs:
+                azureSubscription: '$(azureServiceConnectionId)'
+                action: 'Create Or Update Resource Group' 
+                resourceGroupName: $(resourceGroupName)
+                location: $(locationName)
+            - task: AzureCLI@2
+              displayName: 'Create Storage Account'
+              inputs:
+                azureSubscription: '$(azureServiceConnectionId)'
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                        az storage account create \
+                          --name $(storageaccountname) \
+                          --resource-group $(resourceGroupName) \
+                          --location $(locationName) \
+                          --sku Standard_RAGRS \
+                          --kind StorageV2
+            - task: AzureCLI@2
+              displayName: 'Create AppService Plan'
+              inputs:
+                azureSubscription: '$(azureServiceConnectionId)'
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                    az functionapp plan create  --resource-group $(resourceGroupName) --name $(appServicePlan) --location $(locationName) --sku B1 
+            - task: AzureCLI@2
+              displayName: 'Create AppService Plan'
+              inputs:
+                azureSubscription: '$(azureServiceConnectionId)'
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                    az functionapp plan create  --resource-group $(resourceGroupName) --name $(appServicePlan) --location $(locationName) --sku B1 
+            - task: AzureCLI@2
+              displayName: 'Create Function App'
+              inputs:
+                azureSubscription: '$(azureServiceConnectionId)'
+                scriptType: 'bash'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                       az functionapp create --resource-group $(resourceGroupName) --plan $(appServicePlan) --name $(webAppName) --functions-version 2 --storage-account $(storageaccountname) --runtime 'python' 
+            
