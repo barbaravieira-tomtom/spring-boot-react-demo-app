@@ -18,10 +18,10 @@ parameters:
     default: 'True'
 
 stages:
-  - stage: Build
-    displayName: Build and Publish Artifact 
+  - stage: Scan 
+    displayName: Scan 3rd Party Dependencies 
     jobs:
-    - job: Build
+    - job: ScanJob
       workspace:
         clean: all
       pool:
@@ -58,8 +58,8 @@ stages:
             script: >
               echo "Build directory full path:$(pwd)";
               grype -vv dir:${{ parameters.buildPath }};
-              grype node:12.4.0-alpine;
-              grype eclipse-temurin:11;
+              grype node:12.4.0-alpine --scope all-layers;
+              grype eclipse-temurin:11 --scope all-layers;
         - task: dependency-check-build-task@6
           displayName: OWASP Dependency Check Scan
           condition: eq(${{ parameters.useDepCheck }}, True)
@@ -69,3 +69,10 @@ stages:
             excludePath: './antenv/'
             format: 'ALL'
             enableExperimental: true
+        - task: AzureFileCopy@4
+          inputs:
+            SourcePath: '$(Build.SourcesDirectory)'
+            azureSubscription: 'ssu-prod-sec-sandbox-dev(ab423add-1b02-47c3-a206-5b4394283cbe)'
+            Destination: 'AzureBlob'
+            storage: 'ssustorageaccount1'
+            ContainerName: 'sast-results'

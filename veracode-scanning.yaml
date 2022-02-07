@@ -5,16 +5,17 @@
 
 
 stages:
-  - stage: Build
-    displayName: Build and Publish Artifact 
+  - stage: Veracode
+    displayName: Scan code with Veracode 
     jobs:
-    - job: Build
+    - job: Scan
       workspace:
         clean: all
       pool:
           vmImage: ubuntu-latest
       steps:
         - task: Maven@3
+          displayName: Build the application with Maven
           inputs:
             mavenPomFile: 'pom.xml'
             publishJUnitResults: true
@@ -25,6 +26,7 @@ stages:
             effectivePomSkip: false
             sonarQubeRunAnalysis: false
         - task: ArchiveFiles@2
+          displayName: Zip the sources and binaries
           inputs:
             rootFolderOrFile: '$(Build.SourcesDirectory)'
             includeRootFolder: false
