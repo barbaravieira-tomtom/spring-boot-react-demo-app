@@ -69,10 +69,3 @@ stages:
             excludePath: './antenv/'
             format: 'ALL'
             enableExperimental: true
-        - task: AzureFileCopy@4
-          inputs:
-            SourcePath: '$(Build.SourcesDirectory)'
-            azureSubscription: 'ssu-prod-sec-sandbox-dev(ab423add-1b02-47c3-a206-5b4394283cbe)'
-            Destination: 'AzureBlob'
-            storage: 'ssustorageaccount1'
-            ContainerName: 'sast-results'
